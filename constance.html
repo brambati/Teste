@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="appConstance">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href="css/constance.min.css">
+  </head>
+  <body ng-controller="meuController">
+    
+	<div class="container-fluid">
+
+		<header>
+			<div class="row menu">
+				<nav>
+					<div class="col-md-10">
+						<img src="img/iconeMenu.png" alt="">
+						<img src="img/logo_constance_branca.png" alt="">
+					</div>
+
+					<div class="col-md-2">
+						
+					</div>
+				</nav>
+			</div>
+
+			<div class="row filtro">
+				<div class="col-md-2 col-xs-12">
+					<h1>CONTAS A PAGAR</h1>
+				</div>
+
+				<div class="col-md-4 col-xs-12">
+					<div class="filtroInput">
+						<a href="#" class="glyphicon glyphicon-refresh "></a>
+					</div>
+					<div class="filtroInput abrirDownTodos">
+						<span class="glyphicon glyphicon-filter"></span>&nbsp;
+						<a href="#">Todos &nbsp;
+							<span class="glyphicon glyphicon-triangle-bottom"></span>
+						</a>
+						<ul class="navDown navDownTodos">
+							<li class="BorderBottom"><a href="#">Todos</a></li>
+							<li><a href="#">Aguardando Programação</a></li>
+							<li class="BorderBottom"><a href="#">Programados</a></li>
+							<li><a href="#">Em Aberto</a></li>
+							<li><a href="#">pagos</a></li>
+						</ul>
+					</div>
+					<div class="filtroInput ml2px">
+						<a href="#" data-toggle="modal" data-target="#myModal">
+							<span class="glyphicon glyphicon-plus"></span> Incluir
+						</a>
+					</div>
+				</div>
+
+				<div class="col-md-3 col-xs-12">
+					<div class="filtroInput abrirDownDatas">
+						<a href="#">01/02/2017 - 28/02/2017 &nbsp;
+							<span class="glyphicon glyphicon-triangle-bottom"></span>
+						</a>
+						<ul class="navDown navDownDatas">
+							<li><a href="#">Hoje</a></li>
+							<li class="BorderBottom"><a href="#">Aguardando Programação</a></li>
+							<li><a href="#">Últimos 30 dias</a></li>
+							<li class="BorderBottom"><a href="#">Próximos 30 dias</a></li>
+							<li><a href="#">Semana anterior</a></li>
+							<li><a href="#">Esta semana</a></li>
+							<li class="BorderBottom"><a href="#">Próxima semana</a></li>
+							<li><a href="#">Mês anterior</a></li>
+							<li><a href="#">Este mês</a></li>
+							<li class="BorderBottom"><a href="#">Próximo mês</a></li>
+							<li><a href="#">Mostrar todos</a></li>
+							<li class="BorderBottom"><a href="#">Mostrar até hoje</a></li>
+							<li><a href="#">Escolha um período</a></li>
+						</ul>
+					</div>
+					<div class="filtroInput ml2px">
+						<span class="glyphicon glyphicon-filter"></span>&nbsp;
+						<a href="#">Vencimento &nbsp;
+							<span class="glyphicon glyphicon-triangle-bottom"></span>
+						</a>
+					</div>
+				</div>
+
+				<div class="col-md-3 col-xs-12">
+				  	<div class="input-group">
+				    	<input type="text" class="form-control buscaFiltro" ng-model="procurar" placeholder="Pesquisar">
+				    	<a href="#" class="input-group-addon buscaFiltro">
+							<span class="glyphicon glyphicon-search"></span>
+				    	</a>
+				  	</div>
+				</div>
+			</div>
+		</header>
+
+		<table class="table table-striped"> 
+			<thead> 
+				<tr> 
+					<th>COD.</th> 
+					<th>Visualizar</th> 
+					<th>Vencimento</th> 
+					<th>Plano de Contas</th> 
+					<th>Pagar para</th> 
+					<th>Doc/parcela</th> 
+					<th>Forma</th>
+					<th>Histórico</th>
+					<th>Valor Original</th>
+					<th>A Pagar</th>
+				</tr> 
+			</thead>
+			<tfoot>
+				<tr>
+				    <td></td>
+				    <td></td>
+				    <td></td>
+				    <td></td>
+				    <td class="text-right" ng-model="TotalContas">
+				    	<img src="img/iconContas.png" alt=""> <span>{{TotalContas}} a pagar</span>
+					</td>
+				    <td></td>
+				    <td></td>
+				    <td></td>
+				    <td ng-model="total">
+				    	<strong>{{ValorTotal | currency:"R$"}}</strong>
+				    </td>
+				    <td></td>
+				</tr>
+			</tfoot>
+			<tbody> 
+				<tr ng-repeat="contas in cntPagar|filter:procurar track by $index" ng-show="{{contas.DataVencimento}}">
+					<td>#{{$index}}</td>
+					<td>
+						<a href="#" class="glyphicon glyphicon-eye-open" data-toggle="modal" data-target="#myModalVisualizar" ng-click="selectPag(contas)"></a>
+					</td>
+					<td>{{contas.DataVencimento | date: 'dd/MM/yyyy'}}</td>
+					<td>
+						<span class="marcacaoPlano">{{contas.PlanoContas}}</span>
+					</td> 
+					<td>{{contas.PagarPara}}</td> 
+					<td>{{contas.NumeroDocumento}}</td> 
+					<td>{{contas.FormaPagamento}}</td>
+					<td>{{contas.Historico}}</td>
+					<td>R$ {{contas.Valor}}</td>
+					<td class="text-right">
+						<span class="label label-success">Pago</span>
+					</td>
+				</tr> 
+			</tbody> 
+		</table>
+
+		<div class="row paginacao">
+			<div class="col-md-1 col-md-offset-8 text-right">
+				<select class="form-control">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="20" selected="selected">20</option>
+				</select>
+			</div>
+
+			<div class="col-md-3 text-right">
+				<nav aria-label="Page navigation">
+				  <ul class="pagination">
+				    <li>
+				      <a href="#" aria-label="Previous">
+				        <span aria-hidden="true">&laquo;</span>
+				      </a>
+				    </li>
+				    <li class="active"><a href="#">1</a></li>
+				    <li><a href="#">2</a></li>
+				    <li><a href="#">3</a></li>
+				    <li><a href="#">4</a></li>
+				    <li><a href="#">5</a></li>
+				    <li><a href="#">6</a></li>
+				    <li><a href="#">7</a></li>
+				    <li><a href="#">8</a></li>
+				    <li><a href="#">9</a></li>
+				    <li>
+				      <a href="#" aria-label="Next">
+				        <span aria-hidden="true">&raquo;</span>
+				      </a>
+				    </li>
+				  </ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal Adicionar-->
+	<div class="modal fade bs-example-modal-lg" id="myModal" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Contas a Pagar</h4>
+				</div>
+				<div class="modal-body">
+				
+				<form>
+				  	
+				  	<strong>Origem:</strong>
+					<hr />
+
+				  	<div class="col-md-6">
+				  		<div class="form-group">
+					  	  <label for="exampleInputName2"><strong>* Pagar para</strong></label><br />
+					  	  <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe" ng-model="novoPagamento.PagarPara">
+					  	</div>
+
+					  	<div class="form-group">
+						  	 <div class="col-md-6">
+						  	 	<div class="row">
+						  	 		<div class="form-group">
+									    <label class="control-label" for="dtEmis">
+											<strong>* Data de Emissão</strong>
+									    </label>
+									    <div class="input-group">
+									      <input type="text" class="form-control" id="dtEmis" placeholder="dd/mm/aaaa" ng-model="novoPagamento.DataEmissao">
+									      <div class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+									      </div>
+									    </div>
+									</div>
+						  	 	</div>
+						  	 </div>
+
+						  	 <div class="col-md-6">
+						  	 	<div class="row">
+						  	 		<div class="form-group">
+									    <label class="control-label" for="nunDoc">
+											<strong>* Número do Documento</strong>
+									    </label>
+									    <div class="input-group">
+									      <input type="text" class="form-control" id="nunDoc" placeholder="Número do Documento" ng-model="novoPagamento.NumeroDocumento">
+									    </div>
+									</div>
+						  	 	</div>
+						  	 </div>
+					  	</div>
+				  	</div>
+
+				  	<div class="col-md-6">
+				  		<div class="form-group">
+					  	  <label for="exampleInputEmail2">Historico</label><br />
+					  	  <input type="text" class="form-control" id="exampleInputEmail2" placeholder="Descrição do Pagamento" ng-model="novoPagamento.Historico">
+					  	</div>
+
+					  	<div class="form-group">
+					  	  <label for="formaPagamento"><strong>* Forma de Pagamento</strong></label><br />
+					  	  <select class="form-control" id="formaPagamento" ng-model="novoPagamento.FormaPagamento">
+					  	  	<option value="" selected="selected">-- Selecione a Forma de pagamento --</option>
+					  	  	<option value="Boleto">Boleto</option>
+					  	  	<option value="Cartao">Cartão</option>
+					  	  </select>
+					  	</div>
+				  	</div>
+				  	
+				  	<div class="col-md-12">
+				  		<div class="form-group">
+							<label for="chvNf">Chave da Nota Fiscal</label>
+    						<input type="text" class="form-control" id="chvNf" placeholder="Chave da Nota Fiscal" ng-model="novoPagamento.ChaveNF">
+				  		</div>
+				  	</div>
+
+					<strong>Pagamento:</strong>
+					<hr />
+
+					<div class="col-md-4">
+						<div class="form-group">
+					  	  <label for="cnt"><strong>* Conta bancária</strong></label><br />
+					  	  <select class="form-control" id="cnt" ng-model="novoPagamento.ContaBancaria">
+					  	  	<option value="" selected="selected">-- Selecione uma Conta bancária --</option>
+					  	  	<option value="Corrente">Corrente</option>
+					  	  	<option value="Poupanca">poupança</option>
+					  	  </select>
+					  	</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="control-label" for="dtVenc">
+								<strong>* Data de Vencimento</strong>
+						    </label>
+						    <div class="input-group">
+						      <input type="text" class="form-control" id="dtVenc" placeholder="dd/mm/aaaa" ng-model="novoPagamento.DataVencimento">
+						      <div class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+						      </div>
+						    </div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="control-label" for="val">
+								<strong>* Valor</strong>
+						    </label>
+						    <div class="input-group">
+						      <input type="number" class="form-control" id="val" placeholder="R$" ng-model="novoPagamento.Valor">
+						    </div>
+						</div>
+					</div>
+
+					<div class="col-md-12">
+						<div class="form-group">
+					  	  <label for="freq"><strong>* Frequência</strong></label><br />
+					  	  <select class="form-control" id="freq" ng-model="novoPagamento.Frequencia">
+					  	  	<option value="" selected="selected">-- Selecione uma Conta bancária --</option>
+					  	  	<option value="1s">1 Vez na Semana</option>
+					  	  	<option value="1m">1 vez ao Mês</option>
+					  	  </select>
+					  	</div>
+					</div>
+
+					<strong>Gerencial:</strong>
+					<hr />
+
+					<div class="col-md-6">
+						<div class="form-group">
+					  	  <label for="PlaCont"><strong>* Plano de Contas</strong></label><br />
+					  	  <select class="form-control" id="PlaCont" ng-model="novoPagamento.PlanoContas">
+					  	  	<option value="" selected="selected">-- Selecione uma Opção --</option>
+					  	  	<option value="Aquisição de produtos">Aquisição de produtos</option>
+					  	  	<option value="pB">Plano B</option>
+					  	  </select>
+					  	</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="form-group">
+					  	  <label for="PlaCont"><strong>* Centro de Custos</strong></label><br />
+					  	  <select class="form-control" id="PlaCont" ng-model="novoPagamento.CentroCustos">
+					  	  	<option value="" selected="selected">-- Selecione uma Opção --</option>
+					  	  	<option value="C1">Centro de Custo A</option>
+					  	  	<option value="C2">Centro de Custo B</option>
+					  	  </select>
+					  	</div>
+					</div>
+				</form>
+				<p>&nbsp;</p>
+				</div>
+				<div class="modal-footer">
+					<div class="col-md-12">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+						<button type="submit" class="btn btn-primary" data-dismiss="modal" ng-click="savarContas()">Salvar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal Visualizar-->
+	<div class="modal fade bs-example-modal-lg" id="myModalVisualizar" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Contas a Pagar</h4>
+				</div>
+				<div class="modal-body">
+				
+				<form>
+				  	
+				  	<strong>Origem:</strong>
+					<hr />
+
+				  	<div class="col-md-6">
+				  		<div class="form-group">
+					  	  <label for="exampleInputName2"><strong>* Pagar para</strong></label><br />
+					  	  <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe" ng-model="visualizarPagamento.PagarPara" disabled="disabled">
+					  	</div>
+
+					  	<div class="form-group">
+						  	 <div class="col-md-6">
+						  	 	<div class="row">
+						  	 		<div class="form-group">
+									    <label class="control-label" for="dtEmis">
+											<strong>* Data de Emissão</strong>
+									    </label>
+									    <div class="input-group">
+									      <input type="text" class="form-control" id="dtEmis" placeholder="dd/mm/aaaa" ng-model="visualizarPagamento.DataEmissao" disabled="disabled">
+									      <div class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+									      </div>
+									    </div>
+									</div>
+						  	 	</div>
+						  	 </div>
+
+						  	 <div class="col-md-6">
+						  	 	<div class="row">
+						  	 		<div class="form-group">
+									    <label class="control-label" for="nunDoc">
+											<strong>* Número do Documento</strong>
+									    </label>
+									    <div class="input-group">
+									      <input type="text" class="form-control" id="nunDoc" placeholder="Número do Documento" ng-model="visualizarPagamento.NumeroDocumento" disabled="disabled">
+									    </div>
+									</div>
+						  	 	</div>
+						  	 </div>
+					  	</div>
+				  	</div>
+
+				  	<div class="col-md-6">
+				  		<div class="form-group">
+					  	  <label for="exampleInputEmail2">Historico</label><br />
+					  	  <input type="text" class="form-control" id="exampleInputEmail2" placeholder="Descrição do Pagamento" ng-model="visualizarPagamento.Historico" disabled="disabled">
+					  	</div>
+
+					  	<div class="form-group">
+					  	  <label for="formaPagamento"><strong>* Forma de Pagamento</strong></label><br />
+					  	  <select class="form-control" id="formaPagamento" ng-model="visualizarPagamento.FormaPagamento" disabled="disabled">
+					  	  	<option value="" selected="selected">-- Selecione a Forma de pagamento --</option>
+					  	  	<option value="Boleto">Boleto</option>
+					  	  	<option value="Cartao">Cartão</option>
+					  	  </select>
+					  	</div>
+				  	</div>
+				  	
+				  	<div class="col-md-12">
+				  		<div class="form-group">
+							<label for="chvNf">Chave da Nota Fiscal</label>
+    						<input type="text" class="form-control" id="chvNf" placeholder="Chave da Nota Fiscal" ng-model="visualizarPagamento.ChaveNF" disabled="disabled">
+				  		</div>
+				  	</div>
+
+					<strong>Pagamento:</strong>
+					<hr />
+
+					<div class="col-md-4">
+						<div class="form-group">
+					  	  <label for="cnt"><strong>* Conta bancária</strong></label><br />
+					  	  <select class="form-control" id="cnt" ng-model="visualizarPagamento.ContaBancaria" disabled="disabled">
+					  	  	<option value="" selected="selected">-- Selecione uma Conta bancária --</option>
+					  	  	<option value="Corrente">Corrente</option>
+					  	  	<option value="Poupanca">poupança</option>
+					  	  </select>
+					  	</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="control-label" for="dtVenc">
+								<strong>* Data de Vencimento</strong>
+						    </label>
+						    <div class="input-group">
+						      <input type="text" class="form-control" id="dtVenc" placeholder="dd/mm/aaaa" ng-model="visualizarPagamento.DataVencimento" disabled="disabled">
+						      <div class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+						      </div>
+						    </div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="control-label" for="val">
+								<strong>* Valor</strong>
+						    </label>
+						    <div class="input-group">
+						      <input type="number" class="form-control" id="val" placeholder="R$" ng-model="visualizarPagamento.Valor" disabled="disabled">
+						    </div>
+						</div>
+					</div>
+
+					<div class="col-md-12">
+						<div class="form-group">
+					  	  <label for="freq"><strong>* Frequência</strong></label><br />
+					  	  <select class="form-control" id="freq" ng-model="visualizarPagamento.Frequencia" disabled="disabled">
+					  	  	<option value="" selected="selected">-- Selecione uma Conta bancária --</option>
+					  	  	<option value="1s">1 Vez na Semana</option>
+					  	  	<option value="1m">1 vez ao Mês</option>
+					  	  </select>
+					  	</div>
+					</div>
+
+					<strong>Gerencial:</strong>
+					<hr />
+
+					<div class="col-md-6">
+						<div class="form-group">
+					  	  <label for="PlaCont"><strong>* Plano de Contas</strong></label><br />
+					  	  <select class="form-control" id="PlaCont" ng-model="visualizarPagamento.PlanoContas" disabled="disabled">
+					  	  	<option value="" selected="selected">-- Selecione uma Opção --</option>
+					  	  	<option value="Aquisição de produtos">Aquisição de produtos</option>
+					  	  	<option value="pB">Plano B</option>
+					  	  </select>
+					  	</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="form-group">
+					  	  <label for="PlaCont"><strong>* Centro de Custos</strong></label><br />
+					  	  <select class="form-control" id="PlaCont" ng-model="visualizarPagamento.CentroCustos" disabled="disabled">
+					  	  	<option value="" selected="selected">-- Selecione uma Opção --</option>
+					  	  	<option value="C1">Centro de Custo A</option>
+					  	  	<option value="C2">Centro de Custo B</option>
+					  	  </select>
+					  	</div>
+					</div>
+				</form>
+				<p>&nbsp;</p>
+				</div>
+				<div class="modal-footer">
+					<div class="col-md-12">
+						<button type="button" class="btn btn-default" data-dismiss="modal">FECHAR</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+	<!-- AngularJS -->
+	<script src="js/angular.min.js"></script>
+	<script src="js/appConstance.js"></script>
+  </body>
+</html>
+
+
+
+
